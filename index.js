@@ -31,11 +31,12 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 };
 
-function getParks(query, maxResults) {
+function getParks(query, maxResults,states) {
   const params = {
     api_key: apiKey,
     q: query,
     limit: maxResults,
+    stateCode: states
   };
   const queryString = formatQueryParams(params)
   const url = searchURL + '?' + queryString;
@@ -51,7 +52,7 @@ function getParks(query, maxResults) {
     })
     .then(responseJson => displayResults(responseJson))
     .catch(err => {
-      $('#js-error-message').text(`Something went wrong: ${err.message}`);
+      $('#js-error-message').text(`There's an error with the search - try again!`);
     });
 }
 
@@ -60,7 +61,8 @@ function watchForm() {
     event.preventDefault();
     const searchTerm = $('#js-search-term').val();
     const maxResults = $('#js-max-results').val();
-    getParks(searchTerm, maxResults);
+    const states = $('#js-states').val();
+    getParks(searchTerm, maxResults,states);
   });
 }
 
